@@ -25,12 +25,24 @@ object ShoppingCart extends App{
     getPrices.map(_.toInt).sum * voucherPercent / 100
   }
 
-  println(basket.mkString("\n")+"\n")
-  println("Total Price: " + totalPrice(basket))
-  println("Total Price of Food: " + foodPrice(basket))
-  println("Total Price with 10% Off: " + totalPrice(basket,10))
-  println("Total Price with 50% off voucher for Washing up Liquid: " + (totalPrice(basket) - voucherDiscount(basket, washingUpLiquid, 50)))
+  def MakeShoppingList(basket : List[Product]) = {
+    val stringLength = basket.map(_.toString.length)
+    val spacers = stringLength.map(x => " " * (38 - x))
+    val newList = basket.zip(spacers).flatMap{ case (a,b) => List(a+b) }
 
+    println(" _______________________________________")
+    println("|                                       |")
+    println("|            SHOPPING LIST              |")
+    println("|_______________________________________|")
+    println("|                                       |")
+    println("| " + newList.mkString("|\n| ")+"|")
+    println("|_______________________________________|\n")
+    println("Total Price: " + totalPrice(basket))
+    println("Total Price of Food: " + foodPrice(basket))
+    println("Total Price with 10% Off: " + totalPrice(basket, 10))
+    println("Total Price with 50% off voucher for Washing up Liquid: " + (totalPrice(basket) - voucherDiscount(basket, washingUpLiquid, 50)))
+  }
+  MakeShoppingList(basket)
 }
 
 
