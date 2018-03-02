@@ -8,14 +8,9 @@ object ShoppingCart extends App{
   val bleach = new Product("Bleach", "Household", 70)
   val basket = List(bread, milk, milk, washingUpLiquid, bleach)
 
-  println(basket)
-  println(totalPrice(basket))
-  println(foodPrice(basket))
-  println(totalPrice(basket,10))
-
   def totalPrice(basket : List[Product], salePercent: Int = 0): Int = {
     val getPrices = "[0-9]+".r.findAllIn(basket.toString).toList
-    (getPrices.map(_.toInt).sum.toDouble / 100 * (100 - salePercent)).toInt
+    getPrices.map(_.toInt).sum * (100 - salePercent) / 100
   }
 
   def foodPrice(basket : List[Product]): Int = {
@@ -23,6 +18,19 @@ object ShoppingCart extends App{
     val getPrices = "[0-9]+".r.findAllIn(getFood.toString).toList
     getPrices.map(_.toInt).sum
   }
+
+  def voucherDiscount(basket : List[Product], item : Product, voucherPercent : Int): Int = {
+    val getItem = basket.filter(_ == item)
+    val getPrices = "[0-9]+".r.findAllIn(getItem.toString).toList
+    getPrices.map(_.toInt).sum * voucherPercent / 100
+  }
+
+  println(basket.mkString("\n")+"\n")
+  println("Total Price: " + totalPrice(basket))
+  println("Total Price of Food: " + foodPrice(basket))
+  println("Total Price with 10% Off: " + totalPrice(basket,10))
+  println("Total Price with 50% off voucher for Washing up Liquid: " + (totalPrice(basket) - voucherDiscount(basket, washingUpLiquid, 50)))
+
 }
 
 
